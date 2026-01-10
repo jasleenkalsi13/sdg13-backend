@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # ✅ Add this
+from flask_cors import CORS  
 
 app = Flask(_name_)
-CORS(app)  # ✅ Enable CORS for all routes
+CORS(app)  
 
 @app.route("/")
 def home():
     return {
         "status": "running",
-        "message": "SDG 13 Climate Action Backend Live 🌍"
+        "message": "SDG 13 Climate Action Backend Live "
     }
 
 @app.route("/carbon", methods=["POST"])
