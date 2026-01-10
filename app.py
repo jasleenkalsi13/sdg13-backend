@@ -1,27 +1,32 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS  
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app)
 
 @app.route("/")
 def home():
     return {
         "status": "running",
-        "message": "SDG 13 Climate Action Backend Live "
+        "message": "SDG 13 Climate Action Backend Live"
     }
 
 @app.route("/carbon", methods=["POST"])
 def carbon():
-    data = request.json
-    score = sum(data.values())
+    data = request.get_json(force=True)
 
-    if score <= 4:
-        level = "Low"
-    elif score <= 8:
-        level = "Moderate"
+    transport = data.get("transport", 0)
+    electricity = data.get("electricity", 0)
+    meat = data.get("meat", 0)
+
+    score = transport + electricity + meat
+
+    if score <= 100:
+        level = "Low "
+    elif score <= 200:
+        level = "Moderate "
     else:
-        level = "High"
+        level = "High "
 
     return jsonify({
         "carbon_score": score,
@@ -30,3 +35,4 @@ def carbon():
 
 if __name__ == "__main__":
     app.run()
+
